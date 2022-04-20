@@ -17,7 +17,7 @@ function logged_only(){
     }
     if(!isset($_SESSION['auth'])){
         $_SESSION['flash']['danger']="Vous n'avez pas le droit d'acceder a cette page";
-        header('Location: pages/samples/login.php');
+        header('Location: login.php');
         exit();
     }
 }

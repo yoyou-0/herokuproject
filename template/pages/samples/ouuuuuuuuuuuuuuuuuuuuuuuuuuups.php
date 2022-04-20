@@ -18,7 +18,6 @@
   <!-- endinject -->
   <!-- Layout styles -->
   <link rel="stylesheet" href="../../assets/css/style.css">
-  <link rel="stylesheet" href="style.css">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="../../assets/images/favicon.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -58,7 +57,7 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $
               </div>
               <div class="profile-name">
                 <h5 class="mb-0 font-weight-normal"><?= $_SESSION['auth']->username; ?></h5>
-                <span>Membere d'Or</span>
+                <span>Gold Member</span>
               </div>
             </div>
 
@@ -193,29 +192,14 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Finalisez Votre Inscription!</h4>
-                  <p class="card-description"> Personal info </p>
-                  <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label"> </label>
-                          <div class="col-sm-9">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Photo</label>
-                          <div class="col-sm-9">
-                            <input type="file" name="photo" class="file-upload-default">
-                            <div class="input-group col-xs-12">
-                            <form class="form" id = "form" action="" enctype="multipart/form-data" method="post">
+                  <form class="form" id = "form" action="" enctype="multipart/form-data" method="post">
         <div class= "upload">
             <?php
             $id = $user["id"];
             $name = $user["username"];
             $image = $user["image"];
             ?>
-            <img src="../samples/img/<?php echo $image; ?>" width = 125 height = 125 title="<?php echo $image; ?>">
+            <img src="img/<?php echo $image; ?>" width = 125 height = 125 title="<?php echo $image; ?>">
             <div class="round">
                 <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <input type="hidden" name="name" value="<?php echo $name; ?>">
@@ -233,7 +217,7 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $
     <?php
     if(isset($_FILES["image"]["name"])){
         $id = $_POST["id"];
-        $name = $_POST["name"];
+        $name = $_POST["username"];
 
         $imageName = $_FILES["image"]["name"];
         $imageSize = $_FILES["image"]["size"];
@@ -264,7 +248,8 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $
             ;
         }
         else{
-            $newImageName = $name . "-" . date("Y.m.d") .  "-" . date("h.i.sa");
+          $newImageName = $name . "-" . date("Y.m.d") .  "-" . date("h.i.sa");
+           
             $newImageName .="." .$imageExtension;
             $query = "UPDATE users SET image = '$newImageName' WHERE id = $id";
             mysqli_query($conn,$query);
@@ -280,143 +265,7 @@ $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $
     }
 
     
-    ?> </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
- 
-                  <form class="form-sample" action="" method="POST" autocomplete="on" enctype="multipart/form-data">
-                  <?php
-
-
-if (!empty($_POST)) {
-
-
-  $user_id = $_SESSION['auth']->id;
-  require_once 'db.php';
-
-  $req = $pdo->prepare("UPDATE users SET nom = ?, prenom = ?,  date_naissance= ?, cin = ?, drpp = ?, specialite = ?, directeur_structure_de_recherche= ?, structure_de_recherche = ?, p_ensa = ?, date_recrutement= ? WHERE id = $user_id");
-  
-
-  $req->execute([$_POST['nom'], $_POST['prenom'], $_POST['date_naissance'], $_POST['cin'], $_POST['drpp'], $_POST['specialite'], $_POST['directeur_structure_de_recherche'], $_POST['structure_de_recherche'], $_POST['p_ensa'], $_POST['date_recrutement']]);
-
-  header('Location: ../../index.php');
-}
-
-?>
-                   
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Nom </label>
-                          <div class="col-sm-9">
-                            <input name="nom" type="text" class="form-control" required />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">CIN</label>
-                          <div class="col-sm-9">
-                            <input name="cin" type="text" class="form-control" required />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Prénom</label>
-                          <div class="col-sm-9">
-                            <input name="prenom" type="text" class="form-control" required />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Date de naissance</label>
-                          <div class="col-sm-9">
-                            <input name="date_naissance" type="date" class="form-control" required />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      
-
-                    </div>
-                    <p class="card-description"> Professional info </p>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">DRPP</label>
-                          <div class="col-sm-9">
-                            <input name="drpp" type="text" class="form-control" required />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Specialite</label>
-                          <div class="col-sm-9">
-                            <input name="specialite" type="text" class="form-control" autocomplete="on" required />
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Directeur de structure de recherche</label>
-                          <div class="col-sm-9">
-                            <input name="directeur_structure_de_recherche" type="text" class="form-control" required />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Structure de Recherche</label>
-                          <div class="col-sm-9">
-                            <input name="structure_de_recherche" type="text" class="form-control" autocomplete="on" required />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Professeur de l'ENSA</label>
-                          <div class="col-sm-4">
-                            <div class="form-check">
-                              <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="p_ensa" id="membershipRadios1" value="OUI" checked> OUI </label>
-                            </div>
-                          </div>
-                          <div class="col-sm-5">
-                            <div class="form-check">
-                              <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="p_ensa" id="membershipRadios2" value="NON"> NON </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Date de Recrutement</label>
-                          <div class="col-sm-9">
-                            <input name="date_recrutement" type="date" class="form-control" required />
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                      <button type="submit" class="btn btn-primary mr-2">Envoyer</button>
-                      
-                  </form>
+    ?>
                 </div>
               </div>
             </div>

@@ -21,16 +21,24 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="assets/images/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
     <?php 
 
     session_start();
     
-    require 'pages/samples/functions.php';
+    require 'functions.php';
     logged_only();
     
     ?>
+    
+<?php
+require 'connection.php';
+$_SESSION["id"] = $_SESSION['auth']->id;
+$sessionId = $_SESSION["id"];
+$user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $sessionId"));
+?>
 
 
 
@@ -45,15 +53,25 @@
           <li class="nav-item profile">
             <div class="profile-desc">
               <div class="profile-pic">
-                <div class="count-indicator">
-                  <img class="img-xs rounded-circle " src="" alt="">
-                  <span class="count bg-success"></span>
-                </div>
+              <div class="count-indicator">
+                
+                <?php
+                $id = $user["id"];
+                $name = $user["username"];
+                $image = $user["image"];
+                ?>
+                <img style="border-radius: 50%;border: 0px;" src="pages/samples/img/<?php echo $image; ?>" width = 38 height = 38 title="<?php echo $image; ?>">
+                <span class="count bg-success"></span>
+                
+                
+            
+                    </div>
                 <div class="profile-name">
                   <h5 class="mb-0 font-weight-normal"><?= $_SESSION['auth']->username; ?></h5>
                   <span>Membre D'Or</span>
                 </div>
               </div>
+              
               <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
               <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
                 <a href="#" class="dropdown-item preview-item">
@@ -115,7 +133,7 @@
           <li class="nav-item menu-items">
           <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
               <span class="menu-icon">
-                <i class="mdi mdi-security"></i>
+                <i class="mdi mdi-folder-multiple-outline"></i>
               </span>
               <span class="menu-title">Dossiers</span>
               <i class="menu-arrow"></i>
@@ -175,46 +193,38 @@
                 </a>
               </li>
               <li class="nav-item dropdown border-left">
-                <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                  <i class="mdi mdi-email"></i>
-                  <span class="count bg-success"></span>
+              <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <i class="mdi mdi-email"></i>
+                <span class="count bg-success"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+                <h6 class="p-3 mb-0">Messages</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="../../assets/images/faces/face4.png" alt="image" class="rounded-circle profile-pic">
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">ENSAJ vous a envoyé un message</p>
+                    <p class="text-muted mb-0"> Nous vous souhaitons le bienvenu!</p>
+                  </div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-                  <h6 class="p-3 mb-0">Messages</h6>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="assets/images/faces/face4.jpg" alt="image" class="rounded-circle profile-pic">
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
-                      <p class="text-muted mb-0"> 1 Minutes ago </p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="assets/images/faces/face2.jpg" alt="image" class="rounded-circle profile-pic">
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
-                      <p class="text-muted mb-0"> 15 Minutes ago </p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="assets/images/faces/face3.jpg" alt="image" class="rounded-circle profile-pic">
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
-                      <p class="text-muted mb-0"> 18 Minutes ago </p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <p class="p-3 mb-0 text-center">0 new messages</p>
-                </div>
-              </li>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="../../assets/images/faces/face4.png" alt="image" class="rounded-circle profile-pic">
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">ENSAJ vous a envoyé un message</p>
+                    <p class="text-muted mb-0"> Inscription Finalisée!</p>
+                  </div>
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <p class="p-3 mb-0 text-center">2 new messages</p>
+              </div>
+            </li>
               <li class="nav-item dropdown border-left">
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
                   <i class="mdi mdi-bell"></i>
@@ -264,11 +274,18 @@
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
-                  <div class="navbar-profile">
-                    <img class="img-xs rounded-circle" src="" alt="">
-                    <p class="mb-0 d-none d-sm-block navbar-profile-name"><?= $_SESSION['auth']->username; ?></p>
-                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
-                  </div>
+                <div class="navbar-profile">
+               
+               <?php
+               $id = $user["id"];
+               $name = $user["username"];
+               $image = $user["image"];
+               ?>
+               <img style="border-radius: 50%;border: 3px solid #007BFF;" src="pages/samples/img/<?php echo $image; ?>" width = 50 height = 50 title="<?php echo $image; ?>">
+        
+                       <p class="mb-0 d-none d-sm-block navbar-profile-name"><?= $_SESSION['auth']->username; ?></p>
+                       <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
                   <h6 class="p-3 mb-0">Profile</h6>
@@ -501,6 +518,63 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-12 stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Vos Dossiers</h4>
+                    <p class="card-description"> Ce tableau rassemble tous  <code>vos dossiers</code>
+                    </p>
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-contextual">
+                        <thead>
+                          <tr>
+                            <th> # </th>
+                            <th> Nom </th>
+                            <th> Type </th>
+                            <th> Date de dépôt </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          
+                          <?php
+                          include_once './racine.php';
+                include_once RACINE . '/service/DossierService.php';
+                $es = new DossierService();
+                if(isset($_SESSION['auth']->username))
+                foreach ($es->findDossierByUsername($_SESSION['auth']->username) as $e) {
+                  $t = $e->getType();
+                  if($t == 'dossier_p'){
+                    ?>
+                    <tr class="table-info">
+                        <td><?php echo $e->getId(); ?></td>
+                        <td><?php echo $e->getProjectName(); ?></td>
+                        <td><?php echo $e->getType(); ?></td>
+                        <td><?php echo $e->getAddAt(); ?></td>
+                        
+                    </tr>
+                <?php }elseif($t == 'dossier_a'){ ?>
+                  <tr class="table-warning">
+                        <td><?php echo $e->getId(); ?></td>
+                        <td><?php echo $e->getProjectName(); ?></td>
+                        <td><?php echo $e->getType(); ?></td>
+                        <td><?php echo $e->getAddAt(); ?></td>
+                        
+                    </tr>
+                <?php }elseif($t == 'dossier_s'){ ?>
+                  <tr class="table-success">
+                        <td><?php echo $e->getId(); ?></td>
+                        <td><?php echo $e->getProjectName(); ?></td>
+                        <td><?php echo $e->getType(); ?></td>
+                        <td><?php echo $e->getAddAt(); ?></td>
+                        
+                    </tr>
+                  <?php } }?>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             
             
           <!-- content-wrapper ends -->

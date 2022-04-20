@@ -1,3 +1,24 @@
+<?php
+
+
+  session_start();
+
+  require 'functions.php';
+  logged_only();
+
+
+
+        include_once './racine.php';
+        include_once RACINE . '/service/DossierService.php';
+
+        $es = new DossierService();
+        ?>
+<?php
+require 'connection.php';
+$_SESSION["id"] = $_SESSION['auth']->id;
+$sessionId = $_SESSION["id"];
+$user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $sessionId"));
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,25 +38,13 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
-  <?php
 
-
-  session_start();
-
-  require 'functions.php';
-  logged_only();
-
-
-
-        include_once './racine.php';
-        include_once RACINE . '/service/DossierService.php';
-
-        $es = new DossierService();
-        ?>
 
 
     <div class="container-scroller">
@@ -49,8 +58,17 @@
             <div class="profile-desc">
               <div class="profile-pic">
                 <div class="count-indicator">
-                  <img class="img-xs rounded-circle " src="../../hanim_hanae1.jpg" alt="">
-                  <span class="count bg-success"></span>
+                
+            <?php
+            $id = $user["id"];
+            $name = $user["username"];
+            $image = $user["image"];
+            ?>
+            <img style="border-radius: 50%;border: 0px;" src="../samples/img/<?php echo $image; ?>" width = 38 height = 38 title="<?php echo $image; ?>">
+            <span class="count bg-success"></span>
+            
+            
+        
                 </div>
                 <div class="profile-name">
                   <h5 class="mb-0 font-weight-normal"><?= $_SESSION['auth']->username; ?></h5>
@@ -117,7 +135,7 @@
           <li class="nav-item menu-items">
           <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
               <span class="menu-icon">
-                <i class="mdi mdi-security"></i>
+                <i class="mdi mdi-folder-multiple-outline"></i>
               </span>
               <span class="menu-title">Dossiers</span>
               <i class="menu-arrow"></i>
@@ -213,46 +231,38 @@
                 </a>
               </li>
               <li class="nav-item dropdown border-left">
-                <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                  <i class="mdi mdi-email"></i>
-                  <span class="count bg-success"></span>
+              <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <i class="mdi mdi-email"></i>
+                <span class="count bg-success"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+                <h6 class="p-3 mb-0">Messages</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="../../assets/images/faces/face4.png" alt="image" class="rounded-circle profile-pic">
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">ENSAJ vous a envoyé un message</p>
+                    <p class="text-muted mb-0"> Nous vous souhaitons le bienvenu!</p>
+                  </div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-                  <h6 class="p-3 mb-0">Messages</h6>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="../../assets/images/faces/face4.jpg" alt="image" class="rounded-circle profile-pic">
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1">Mark send you a message</p>
-                      <p class="text-muted mb-0"> 1 Minutes ago </p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="../../assets/images/faces/face2.jpg" alt="image" class="rounded-circle profile-pic">
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1">Cregh send you a message</p>
-                      <p class="text-muted mb-0"> 15 Minutes ago </p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="../../assets/images/faces/face3.jpg" alt="image" class="rounded-circle profile-pic">
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1">Profile picture updated</p>
-                      <p class="text-muted mb-0"> 18 Minutes ago </p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <p class="p-3 mb-0 text-center">4 new messages</p>
-                </div>
-              </li>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="../../assets/images/faces/face4.png" alt="image" class="rounded-circle profile-pic">
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1">ENSAJ vous a envoyé un message</p>
+                    <p class="text-muted mb-0"> Inscription Finalisée!</p>
+                  </div>
+                </a>
+
+                <div class="dropdown-divider"></div>
+
+                <p class="p-3 mb-0 text-center">2 new messages</p>
+              </div>
+            </li>
               <li class="nav-item dropdown border-left">
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
                   <i class="mdi mdi-bell"></i>
@@ -303,7 +313,14 @@
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
-                    <img class="img-xs rounded-circle" src="../../hanim_hanae1.jpg" alt="">
+               
+            <?php
+            $id = $user["id"];
+            $name = $user["username"];
+            $image = $user["image"];
+            ?>
+            <img style="border-radius: 50%;border: 3px solid #007BFF;" src="../samples/img/<?php echo $image; ?>" width = 50 height = 50 title="<?php echo $image; ?>">
+     
                     <p class="mb-0 d-none d-sm-block navbar-profile-name"><?= $_SESSION['auth']->username; ?></p>
                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                   </div>
@@ -318,22 +335,22 @@
                       </div>
                     </div>
                     <div class="preview-item-content">
-                      <p class="preview-subject mb-1">Settings</p>
+                      <p class="preview-subject mb-1">Paramétres</p>
                     </div>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
+                  <a class="dropdown-item preview-item" href="../../pages/samples/logout.php">
                     <div class="preview-thumbnail">
                       <div class="preview-icon bg-dark rounded-circle">
                         <i class="mdi mdi-logout text-danger"></i>
                       </div>
                     </div>
                     <div class="preview-item-content">
-                      <p class="preview-subject mb-1">Log out</p>
+                      <p class="preview-subject mb-1">Se déconnecter</p>
                     </div>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <p class="p-3 mb-0 text-center">Advanced settings</p>
+                  <p class="p-3 mb-0 text-center">Paramétres Avancés</p>
                 </div>
               </li>
             </ul>
@@ -360,7 +377,7 @@
                 <div class="card">
                   <div class="card-body">
                   <h4 class="card-title">Consulter/Modifier votre Profil</h4>
-                  <form class="form-sample" action="" method="POST" autocomplete="on">
+                  <form class="form-sample" action="" method="POST" autocomplete="on" enctype="multipart/form-data">
                     <p class="card-description"> Informations Personnelles </p>
                     <div class="row">
                       <div class="col-md-6">
@@ -394,6 +411,25 @@
                           <label class="col-sm-3 col-form-label"></label>
                           <div class="col-sm-9">
                           <label class="col-sm-3 col-form-label">Photo :</label>
+                          <div class="col-sm-9">
+        <div class= "upload">
+            <?php
+            $id = $user["id"];
+            $name = $user["username"];
+            $image = $user["image"];
+            ?>
+            <img src="../samples/img/<?php echo $image; ?>" width = 125 height = 125 title="<?php echo $image; ?>">
+            <div class="round">
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
+                <input type="hidden" name="name" value="<?php echo $name; ?>">
+                <input type="file" name="image" id = "image" value="<?php echo $id; ?>" accept = ".jpg, .jpeg, .png ">
+                <i class = "fa fa-camera" ></i>
+            </div>
+            
+        </div>
+   
+   
+                          </div>
                           </div>
                         </div>
                       </div>
